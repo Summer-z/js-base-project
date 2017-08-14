@@ -6,30 +6,41 @@ let sinonChai = require("sinon-chai");
 let expect = chai.expect;
 chai.use(sinonChai);
 
-let getEntireLyrics = require("../lib/main.js");
-let lyrics = require("../lib/lyrics.js");
+const main = require("../lib/main.js");
 
-describe("Print out the lyrics of '99 bottles of beer on the wall' song", function(){
+
+describe("The conversion between Zip code and barcode", function(){
     sinon.spy(console, 'log');
 
-    it("Test the last paragraph of the lyrics", function(){
-        let num = 0;
-        let result = getEntireLyrics(num);
-        let expect_string = lyrics.lastLyrics();
-        expect(expect_string).to.be.equal(result);
+    it("When the input is a five-digit zip code", function(){
+        let input = '95713';
+        let result = main(input);
+        let expect_string = '||:|:::|:|:|:::|:::||::||::|:|:|';
+
+        expect(expect_string).to.equal(result);
     });
 
-    it("Test the last two paragraph of the lyrics", function(){
-        let num = 1;
-        let result = getEntireLyrics(num);
-        let expect_string = lyrics.lastTwoLyrics();
-        expect(expect_string).to.be.equal(result);
+    it("When the input is a ten-digit zip code", function(){
+        let input = '95713-2011';
+        let result = main(input);
+        let expect_string = '||:|:::|:|:|:::|:::||::||:::|:|||::::::||:::||:::|||';
+
+        expect(expect_string).to.equal(result);
     });
 
-    it("Test the entire lyrics of the song '99 bottles of beer on the wall'", function(){
-        let num = 99;
-        let result = getEntireLyrics(num);
-        let expect_string = lyrics.entireLyrics();
-        expect(expect_string).to.be.equal(result);
+    it("When the input is a five-digit barcode", function(){
+        let input = '||:|:::|:|:|:::|:::||::||::|:|:|';
+        let result = main(input);
+        let expect_string = '95713';
+
+        expect(expect_string).to.equal(result);
+    });
+
+    it("When the input is a ten-digit barcode", function(){
+        let input = '||:|:::|:|:|:::|:::||::||:::|:|||::::::||:::||:::|||';
+        let result = main(input);
+        let expect_string = '95713-2011';
+
+        expect(expect_string).to.equal(result);
     });
 });
